@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
 from app.models.Account import Account
 from app.helpers.Response import Response
+from app.helpers.Auth import login_required, admin_required
 
 accounts = Blueprint('accounts', __name__)
 
 @accounts.route('/accounts', methods=['GET'])
+@login_required
 def get_accounts():
 
     per_page = int(request.args.get('per_page')) if 'per_page' in request.args else 10
@@ -27,6 +29,7 @@ def get_accounts():
     return Response.make_response(result, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['GET'])
+@login_required
 def get_single_account(account_number):
     account = Account.find_account(account_number)
 
@@ -37,6 +40,7 @@ def get_single_account(account_number):
     return resp
 
 @accounts.route('/accounts', methods=['POST'])
+@admin_required
 def create_account():
     json_data = request.get_json()
     Account.create_account(json_data)
@@ -44,7 +48,9 @@ def create_account():
     return Response.make_response({'message': 'Account created'}, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['DELETE'])
-def delete_account(account_number):
+@admin_required
+def delete_account(role, account_number):
+    print(role)
     account = Account.find_account(account_number)
 
     if account:
@@ -55,6 +61,7 @@ def delete_account(account_number):
     return resp
 
 @accounts.route('/account/<int:account_number>', methods=['PUT'])
+@admin_required
 def update_account(account_number):
     json_data = request.get_json()
 
