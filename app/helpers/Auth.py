@@ -39,5 +39,5 @@ def admin_required(f):
         if role != 'admin':
             return Response.make_response({'message': 'Unauthorize'}, 401)
 
-        return f(role, *args, **kwargs)
+        return f(*args, **kwargs)
     return decorated

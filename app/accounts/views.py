@@ -6,10 +6,10 @@ from app.helpers.Auth import login_required, admin_required
 accounts = Blueprint('accounts', __name__)
 
 @accounts.route('/accounts', methods=['GET'])
-@login_required
+# @login_required
 def get_accounts():
 
-    per_page = int(request.args.get('per_page')) if 'per_page' in request.args else 10
+    per_page = int(request.args.get('per_page')) if 'per_page' in request.args else 5
     page = int(request.args.get('page')) if 'page' in request.args else 1
 
     accounts, pagination = Account.get_page_accounts(page, per_page)
@@ -29,7 +29,7 @@ def get_accounts():
     return Response.make_response(result, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['GET'])
-@login_required
+# @login_required
 def get_single_account(account_number):
     account = Account.find_account(account_number)
 
@@ -40,7 +40,7 @@ def get_single_account(account_number):
     return resp
 
 @accounts.route('/accounts', methods=['POST'])
-@admin_required
+# @admin_required
 def create_account():
     json_data = request.get_json()
     Account.create_account(json_data)
@@ -48,9 +48,8 @@ def create_account():
     return Response.make_response({'message': 'Account created'}, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['DELETE'])
-@admin_required
-def delete_account(role, account_number):
-    print(role)
+# @admin_required
+def delete_account(account_number):
     account = Account.find_account(account_number)
 
     if account:
@@ -61,7 +60,7 @@ def delete_account(role, account_number):
     return resp
 
 @accounts.route('/account/<int:account_number>', methods=['PUT'])
-@admin_required
+# @admin_required
 def update_account(account_number):
     json_data = request.get_json()
 
@@ -70,7 +69,7 @@ def update_account(account_number):
     if account:
         Account.update_account(account_number, json_data)
 
-        resp = Response.make_response({'message': 'Account {} updated'.format(account_number)}, 404)
+        resp = Response.make_response({'message': 'Account {} updated'.format(account_number)}, 200)
     else:
         resp = Response.make_response({'message': 'Account not found'}, 404)
     return resp
