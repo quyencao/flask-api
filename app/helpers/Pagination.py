@@ -32,3 +32,24 @@ class Pagination:
     def end(self):
         return self.current_page * self.per_page
 
+    @property
+    def display(self):
+        pages = []
+        if self.last_pages <= 10:
+            for i in range(self.last_pages):
+                pages.append(i + 1)
+        elif self.current_page <= 6:
+            for i in range(10):
+                pages.append(i + 1)
+        else:
+            start = self.current_page - 5
+            end = self.current_page + 4
+
+            if end > self.last_pages:
+                end = self.last_pages
+                start = end - 10
+
+            for i in range(start, end + 1, 1):
+                pages.append(i)
+
+        return pages

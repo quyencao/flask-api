@@ -9,6 +9,7 @@
         $scope.account_number = undefined
         $scope.account_update_create = false
         $scope.account_index = 0
+        $scope.search_criteria = {}
 
         $scope.save = function() {
             if($scope.account_number !== undefined) {
@@ -62,6 +63,7 @@
                 url: '/accounts'
             }).then(function(response) {
                 $scope.accounts = response.data.data
+                $scope.pagination = response.data.pagination
             }, function(error) {
                 console.log(error)
             })
@@ -78,6 +80,43 @@
             }, function(error) {
                 console.log(error)
             })
+        }
+
+        $scope.getRange = function(last) {
+            range = [];
+
+            for(let i = 1; i <= last; i++) {
+                range.push(i);
+            }
+
+            return range;
+        }
+
+        $scope.getPage = function(page) {
+
+            $http({
+                method: 'GET',
+                url: '/accounts',
+                params: {page: page}
+            }).then(function(response) {
+                $scope.accounts = response.data.data
+                $scope.pagination = response.data.pagination
+            }, function(error) {
+                console.log(error)
+            })
+        }
+
+        $scope.searchAccount = function() {
+            $http({
+                method: 'GET',
+                url: '/accounts',
+            }).then(function(response) {
+                $scope.accounts = response.data.data
+                $scope.pagination = response.data.pagination
+            }, function(error) {
+                console.log(error)
+            })
+
         }
 
         $scope.loadAccount()

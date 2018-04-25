@@ -15,14 +15,18 @@ def get_accounts():
     accounts, pagination = Account.get_page_accounts(page, per_page)
 
     result = {
-        'total': pagination.total,
-        'per_page': pagination.per_page,
-        'current_page': pagination.current_page,
-        'last_page': pagination.last_pages,
-        'prev_page': pagination.prev_page,
-        'next_page': pagination.next_page,
-        'from': pagination.start,
-        'to': pagination.end,
+        'pagination': {
+            'total': pagination.total,
+            'per_page': pagination.per_page,
+            'current_page': pagination.current_page,
+            'last_page': pagination.last_pages,
+            'prev_page': pagination.prev_page,
+            'next_page': pagination.next_page,
+            'from': pagination.start,
+            'to': pagination.end,
+            'base_url': request.url,
+            'pages': pagination.display
+        },
         'data': accounts
     }
 
