@@ -45,6 +45,7 @@
                 $scope.account_number = $scope.account_info.account_number
                 $scope.account_index = index
             } else {
+                console.log($scope.account_info)
                 $scope.account_update_create = false
                 $scope.account_info = {}
                 $scope.account_number = undefined
@@ -53,7 +54,10 @@
         }
 
         $scope.hideModal = function() {
-            $scope.account_info = {}
+            $scope.account_form.$setPristine();
+            $scope.account_form.$setUntouched();
+//            $scope.account_info = {}
+            $scope.reset()
             $('#account-modal').modal('hide')
         }
 
@@ -82,16 +86,6 @@
             })
         }
 
-        $scope.getRange = function(last) {
-            range = [];
-
-            for(let i = 1; i <= last; i++) {
-                range.push(i);
-            }
-
-            return range;
-        }
-
         $scope.getPage = function(page) {
 
             $http({
@@ -117,6 +111,21 @@
                 console.log(error)
             })
 
+        }
+
+        $scope.reset = function() {
+            $scope.account_info = Object.assign({}, {
+                account_number: '',
+                balance: '',
+                age: '',
+                city: '',
+                email: '',
+                employer: '',
+                firstname: '',
+                gender: '',
+                lastname: '',
+                state: ''
+            })
         }
 
         $scope.loadAccount()
