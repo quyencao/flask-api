@@ -7,6 +7,10 @@ angular.module('app')
         $scope.title = action ? 'Create New Account' : 'Edit ' + selectedAccount.account_number;
 
         $scope.save = function () {
+            if($scope.account_form.$invalid) {
+                return;
+            }
+
             if(action) {
                 // Create
                 accountService.createAccount($scope.account, $scope.actionSuccessComplete, $scope.actionErrorComplete);

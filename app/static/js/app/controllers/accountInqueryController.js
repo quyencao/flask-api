@@ -14,7 +14,10 @@ angular.module('app')
             $scope.lastName = '';
             $scope.email = '';
             $scope.gender = -1;
-            $scope.balance = '';
+            $scope.balance = undefined;
+
+            $scope.sortDirection = "ASC";
+            $scope.sortExpression = "balance";
 
             $scope.getAccounts();
 
@@ -48,6 +51,8 @@ angular.module('app')
              var accountInquiry = new Object();
              accountInquiry.page = $scope.currentPageNumber;
              accountInquiry.per_page = $scope.pageSize;
+             accountInquiry.sortDirection = $scope.sortDirection;
+             accountInquiry.sortExpression = $scope.sortExpression;
 
              if($scope.firstName !== '') {
                  accountInquiry.firstName = $scope.firstName;
@@ -65,7 +70,7 @@ angular.module('app')
                  accountInquiry.gender = $scope.gender;
              }
 
-             if($scope.balance !== '') {
+             if($scope.balance !== undefined) {
                  accountInquiry.balance = $scope.balance;
              }
 
@@ -86,7 +91,7 @@ angular.module('app')
             $scope.lastName = '';
             $scope.email = '';
             $scope.gender = -1;
-            $scope.balance = '';
+            $scope.balance = undefined;
             $scope.getAccounts();
         };
 
@@ -106,7 +111,7 @@ angular.module('app')
               animation: $scope.animationsEnabled,
               ariaLabelledBy: 'modal-title',
               ariaDescribedBy: 'modal-body',
-              templateUrl: '/templates/accountMaintainance.html',
+              templateUrl: '/static/js/app/partials/accountMaintainance.html',
               controller: 'accountMaintainanceController',
               size: size,
               appendTo: parentElem,
@@ -139,5 +144,11 @@ angular.module('app')
         $scope.resetModal = function () {
             $scope.selectedAccount = undefined;
             $scope.selectedAccountIndex = undefined;
+        };
+
+        $scope.sortBy = function (exp) {
+            $scope.sortExpression = exp;
+            $scope.sortDirection = $scope.sortDirection == 'DESC' ? 'ASC' : 'DESC';
+            $scope.getAccounts();
         };
     }]);

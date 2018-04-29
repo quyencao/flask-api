@@ -31,7 +31,11 @@ def get_accounts():
     if qBalance is not None:
         search_criteria['balance'] = {'$lt': qBalance}
 
-    accounts, pagination = Account.get_page_accounts(page, per_page, search_criteria)
+    sort_criteria = {}
+    sort_criteria['sortDirection'] = 1 if request.args.get('sortDirection') == 'ASC' else -1
+    sort_criteria['sortExpression'] = request.args.get('sortExpression')
+
+    accounts, pagination = Account.get_page_accounts(page, per_page, search_criteria, sort_criteria)
 
     result = {
         'pagination': {

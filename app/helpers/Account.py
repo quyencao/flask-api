@@ -7,11 +7,11 @@ class Account:
 
 
     @staticmethod
-    def get_page_accounts(page, per_page, search_criteria):
+    def get_page_accounts(page, per_page, search_criteria, sort_criteria):
         total = mongo.db.accounts.find(search_criteria).count()
         pagination = Pagination(total, page, per_page)
 
-        accounts = mongo.db.accounts.find(search_criteria).sort('_id', pymongo.ASCENDING).skip(pagination.start - 1).limit(per_page)
+        accounts = mongo.db.accounts.find(search_criteria).sort(sort_criteria['sortExpression'], sort_criteria['sortDirection']).skip(pagination.start - 1).limit(per_page)
 
         page_accounts = []
 

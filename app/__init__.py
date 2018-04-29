@@ -9,7 +9,7 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def index():
-    return render_template('accountInquery.html')
+    return render_template('index.html')
 
 from app.auth.views import auth
 

@@ -1,0 +1,73 @@
+<div ng-controller="accountInqueryController" ng-init="initializeController()">
+    <button type="button" class="btn btn-secondary" ng-click="isCollapsed = !isCollapsed">Search</button>
+    <hr>
+    <div uib-collapse="isCollapsed" class="mb-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <input class="form-control form-control-sm" type="text" placeholder="Search by first name"
+                        ng-model="firstName" ng-change="searchAccount()">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-sm" type="text" placeholder="Search by last name"
+                        ng-model="lastName" ng-change="searchAccount()">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-sm" type="text" placeholder="Search by email"
+                        ng-model="email" ng-change="searchAccount()">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-sm" type="text" placeholder="Search by balance"
+                        ng-model="balance" ng-change="searchAccount()" number-only>
+                </div>
+                <div class="form-group">
+                    <select class="form-control form-control-sm" ng-model="gender" ng-change="searchAccount()">
+                      <option value="-1">Search by gender</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-warning" ng-click="reset()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <button class="btn btn-primary btn-sm" ng-click="openModal()">Create Account</button>
+
+    <table class="table table-bordered table-striped" style="margin-top: 100px">
+        <thead>
+            <tr>
+                <th ng-click="sortBy('account_number')">Account Number</th>
+                <th ng-click="sortBy('balance')">Balance</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in accounts">
+                <td>{{item.account_number}}</td>
+                <td>{{item.balance}}</td>
+                <td>{{item.firstname}}</td>
+                <td>{{item.lastname}}</td>
+                <td>{{item.email}}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" ng-click="openModal($index)">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul uib-pagination total-items="totalAccounts"
+        ng-model="currentPageNumber"
+        max-size="5"
+        class="pagination"
+        boundary-link-numbers="true"
+        ng-change="pageChanged()"></ul>
+
+</div>
