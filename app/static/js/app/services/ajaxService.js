@@ -23,4 +23,12 @@ angular.module('app')
             errorFn(response);
         });
     };
+
+    this.ajaxPost2 = function (data, url) {
+        return $http({
+            method: 'POST',
+            url: url,
+            data: data
+        })
+    };
 }]);

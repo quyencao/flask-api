@@ -6,10 +6,10 @@ from app.helpers.Token import decode_token
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'x-access-token' not in request.headers:
+        if 'Authorization' not in request.headers:
             return Response.make_response({'message': 'Unauthorize'}, 401)
-
-        access_token = request.headers.get('x-access-token')
+        print (request.headers)
+        access_token = request.headers.get('Authorization')
 
         result = decode_token(access_token)
 

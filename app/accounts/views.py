@@ -7,7 +7,7 @@ import re
 accounts = Blueprint('accounts', __name__)
 
 @accounts.route('/accounts', methods=['GET'])
-# @login_required
+@login_required
 def get_accounts():
 
     per_page = int(request.args.get('per_page')) if 'per_page' in request.args else 5
@@ -55,7 +55,7 @@ def get_accounts():
     return Response.make_response(result, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['GET'])
-# @login_required
+@login_required
 def get_single_account(account_number):
     account = Account.find_account(account_number)
 
@@ -66,7 +66,7 @@ def get_single_account(account_number):
     return resp
 
 @accounts.route('/accounts', methods=['POST'])
-# @admin_required
+@admin_required
 def create_account():
     json_data = request.get_json()
     Account.create_account(json_data)
@@ -74,7 +74,7 @@ def create_account():
     return Response.make_response({'message': 'Account created'}, 200)
 
 @accounts.route('/account/<int:account_number>', methods=['DELETE'])
-# @admin_required
+@admin_required
 def delete_account(account_number):
     account = Account.find_account(account_number)
 
@@ -86,7 +86,7 @@ def delete_account(account_number):
     return resp
 
 @accounts.route('/account/<int:account_number>', methods=['POST'])
-# @admin_required
+@admin_required
 def update_account(account_number):
     json_data = request.get_json()
 

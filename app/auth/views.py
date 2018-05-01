@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app import mongo
 from flask_bcrypt import Bcrypt
-from app.helpers.Token import generate_token
+from app.helpers.Token import generate_token, decode_token
 from app.helpers.Response import Response
 
 auth = Blueprint('auth', __name__)
@@ -41,7 +41,7 @@ def login():
 
     if 'username' not in data or 'password' not in data:
         response = jsonify({'message': 'You must enter a username and password'})
-        response.status_code = 500
+        response.status_code = 400
 
         return response
 
@@ -60,3 +60,21 @@ def login():
             return Response.make_response({'token': token}, 200)
         else:
             return Response.make_response({'message': 'Your password is wrong'}, 400)
+
+@auth.route('/token/valid', methods=['POST'])
+def checkvalidtoken():
+    token = request.get_json()['token']
+
+    decode = decode_token(token)
+
+    if decode is not None:
+        data = {
+            'valid': True,
+            'role': decode['role']
+        }
+    else:
+        data = {
+            'valid': False
+        }
+
+    return Response.make_response(data, 200)
